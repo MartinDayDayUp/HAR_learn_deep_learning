@@ -135,7 +135,8 @@ def run_test():
             preds = torch.argmax(F.softmax(logits),1)#也可以不求softmax，因为最大的值其实就是最大的softmax后的概率
             preds_list.extend(preds.cpu().numpy().tolist())
             ground_list.extend(label.cpu().numpy().tolist())
-            accuracy += torch.sum(preds == label).numpy()
+            # accuracy += torch.sum(preds == label).numpy()
+            accuracy += torch.sum(preds == label).item()
 
     accuracy = accuracy/len(testLoader.dataset)     
     logger.info(f'total test acc = {accuracy:.2f}')
