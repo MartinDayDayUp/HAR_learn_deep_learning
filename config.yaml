@@ -8,9 +8,9 @@ test_file_path: 'dataSet/combined_test_mmwave_4group_1131102_0_45_180_315.csv'
 
 
 #out_out
-# checkpoint_path: './out'
-checkpoint_path: '/kaggle/working/outputs'
+checkpoint_path: './out'
+# checkpoint_path: '/kaggle/working/outputs'
 
 #log_path
-# log_path: './out'
-checkpoint_path: '/kaggle/working/outputs'
+log_path: './out'
+# log_path: '/kaggle/working/outputs'
