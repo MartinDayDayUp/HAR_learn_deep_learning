@@ -1,0 +1,15 @@
+
+#train
+epochs: 1
+batch_size: 128
+lr: 1.0e-4
+train_file_path: 'dataSet/combined_train_mmwave_4group_1131102_0_45_180_315.csv'
+test_file_path: 'dataSet/combined_test_mmwave_4group_1131102_0_45_180_315.csv'
+
+
+#out_out
+checkpoint_path: './out'
+
+#log_path
+log_path: './out'
+
