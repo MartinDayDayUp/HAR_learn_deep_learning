@@ -73,7 +73,7 @@ def save_model(checkPoint,filePath,fileName):
 def run_train(model_name):
     if model_name == 'transFormer':
         lstmM = TfClasser(24,16,128,4,256,4).to(device)
-        print('model is transformer ')
+        print('run train model is transformer ')
      
     else:
         lstmM = getLSTMModel().to(device)
@@ -122,10 +122,10 @@ def run_train(model_name):
 def run_test(model_name):
     
     if model_name == 'transFormer':
-        lstmM = TfClasser(24,16,128,4,256,4).to(device)     
-        print('model is transformer ')
+        lstmM = TfClasser(24,16,128,4,256,4)    
+        print('run test model is transformer ')
     else:
-        lstmM = getLSTMModel().to(device)
+        lstmM = getLSTMModel()
         print('model is lstm ')
 
 
@@ -134,8 +134,9 @@ def run_test(model_name):
         logger.info('no Model')
         return 
 
-    check_point = torch.load(check_path)
+    check_point = torch.load(check_path ,map_location='cpu')
     lstmM.load_state_dict(check_point['state_dict'])
+    lstmM = lstmM.to(device)
     lstmM.eval()
     preds_list = []
     ground_list =[]
