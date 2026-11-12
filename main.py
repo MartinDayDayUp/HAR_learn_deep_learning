@@ -4,7 +4,7 @@ from utils.init_log import Logger
 from utils.init_config import getConfig
 
 from getDataSet import GetDataSet
-from getModel import getLSTMModel,getBILSTMModel 
+from getModel import getLSTMModel,getBILSTMModel,TfClasser
 from torch.utils.data import DataLoader
 import torch.nn as nn
 import torch.optim as optim
@@ -29,8 +29,8 @@ logger.info(config)
 testData = GetDataSet(config.test_file_path)
 trainData = GetDataSet(config.train_file_path)
 
-trainLoader = DataLoader(trainData,batch_size=batch_size,shuffle=True)
-testLoader = DataLoader(testData,batch_size=batch_size)
+trainLoader = DataLoader(trainData,batch_size=batch_size,shuffle=True,pin_memory=True,prefetch_factor=2,num_workers=2)
+testLoader = DataLoader(testData,batch_size=batch_size,pin_memory=True,prefetch_factor=2,num_workers=2)
 
 # feature,label = dataSets[0]
 
@@ -70,8 +70,15 @@ def save_model(checkPoint,filePath,fileName):
 
 
 
-def run_train():
-    lstmM = getLSTMModel().to(device)
+def run_train(model_name):
+    if model_name == 'transFormer':
+        lstmM = TfClasser(24,16,128,4,256,4).to(device)
+        print('model is transformer ')
+     
+    else:
+        lstmM = getLSTMModel().to(device)
+        print('model is lstm ')
+
     criterion = nn.CrossEntropyLoss()
     optimizer = optim.Adam(lstmM.parameters(), lr=lr)
 
@@ -112,8 +119,16 @@ def run_train():
     
     # save_model(checkpoint,config.checkpoint_path,'bi_lstm.pth')
 
-def run_test():
-    lstmM = getLSTMModel().to(device)
+def run_test(model_name):
+    
+    if model_name == 'transFormer':
+        lstmM = TfClasser(24,16,128,4,256,4)     
+        print('model is transformer ')
+    else:
+        lstmM = getLSTMModel().to(device)
+        print('model is lstm ')
+
+
     check_path = os.path.join(config.checkpoint_path,'lstm_model.pth')
     if not os.path.exists(check_path):
         logger.info('no Model')
@@ -168,8 +183,9 @@ def run_test():
 
 
 if __name__ == '__main__':
-    run_train()
-    run_test()
+    model_name = 'transFormer'
+    run_train(model_name)
+    run_test(model_name)
 
 
 # logger.info(feature)
