@@ -122,7 +122,7 @@ def run_train(model_name):
 def run_test(model_name):
     
     if model_name == 'transFormer':
-        lstmM = TfClasser(24,16,128,4,256,4)     
+        lstmM = TfClasser(24,16,128,4,256,4).to(device)     
         print('model is transformer ')
     else:
         lstmM = getLSTMModel().to(device)
